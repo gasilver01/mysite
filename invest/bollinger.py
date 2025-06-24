@@ -64,13 +64,16 @@ def create_rtn(_df):
     # 수익율 계산
     for idx in df.index:
         # 매수 
-        if (df.shift().loc[idx, 'trade'] == "") & \
+        if  (df.shift().loc[idx, 'trade'] == np.nan) | \
+            (df.shift().loc[idx, 'trade'] == "") & \
             (df.loc[idx, 'trade'] == 'buy'):
+            print('매수')
             buy = df.loc[idx, col]
             print(f"매수일 : {idx}, 매수가 : {buy}")
         # 매도
         elif (df.shift().loc[idx, 'trade'] == "buy") & \
             (df.loc[idx, 'trade'] == ""):
+            print('매도')
             sell = df.loc[idx, col]
             rtn = sell / buy
             df.loc[idx, 'rtn'] = rtn

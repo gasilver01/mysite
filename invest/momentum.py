@@ -19,7 +19,7 @@ def create_YM(
 def create_last_month(
     _df, 
     _start = '2010-01-01', 
-    _end = datetime.now(),
+    _end = datetime.now(), 
     _momentum = 12
 ):
     # 기준이 되는 컬럼의 이름을 변수에 저장 
@@ -37,7 +37,7 @@ def create_last_month(
 
 def create_rtn(
     _df1, _df2, 
-    _start = '2010-01-01',
+    _start = '2010-01-01', 
     _end = datetime.now(),
     _score = 1
 ):
