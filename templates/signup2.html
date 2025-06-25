@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>singup2<title>
+    {% include 'header.html' %}
+</head>
+<body>
+    <form action = "/user_insert" method = "post">
+        <div>
+            <label>ID</label>
+            <input type="text" name="input_id" value = "{{id}}" readonly>
+        </div>
+        <div>
+            <label>password</label>
+            <input type="password" name="input_pass" value = "{{id}}" readonly>
+        </div>
+        <input type="submit" value="회원가입">
+    </form>
+</body>
+</html>

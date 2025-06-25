@@ -4,7 +4,7 @@ import pymysql
 # sql 쿼리문을 보내고
 # 결과를 받아올 수 있는 class 선언
 
-class myDB :
+class MyDB :
     # 생성자 함수
     # 매개 변수 : DB server의 정보(기본값은 내 컴퓨터의 DB 정보)
     def __init__(

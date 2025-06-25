@@ -2,9 +2,11 @@
 from flask import Flask, render_template, request, url_for, redirect
 import pandas as pd
 from invest import Quant
-import database
+from database import MyDB
 
-mydb = database.MyDB()
+# MyDB class 생성
+mydb = MyDB()
+
 # Flask class 생성 
 # 생성자 함수 필요한 인자 : 파일의 이름 
 app = Flask(__name__)
@@ -14,33 +16,75 @@ app = Flask(__name__)
 # root url + 주소(route함수에 인자) 
 @app.route('/')
 def index():
-
     return render_template('login.html')
 
 @app.route('/main', methods=['post'])
 def main():
-    _id = request.form['input_id']
-    _pass = request.form['input_pass']
+    # 유저가 보낸 데이터를 변수에 저장
+    # get 방식으로 보낸 데이터 : request.args
+    # post 방식으로 보낸 데이터 : request.form
+    user_id = request.form['input_id']
+    user_pass = request.form['input_pass']
+    print(f"id : {user_id},pass : {user_pass}")
+    # 유저가 입력한 아이디와 비밀번호를 DB server 해당 데이터가 존재하는가?
     login_query = """
-        select 
-        * 
-        from 
-        user 
-        where 
-        id = %s 
-        and 
-        password = %s
+        select *  from `user` 
+        where `id` = %s and  `password` = %s
+    """
+    # %s : 변수를 집어 넣어준다는 의미
+
+    result_sql = mydb.sql_query(login_query, user_id, user_pass)
+
+    # result_sql가 존재하는가? -> 로그인 성공
+    if result_sql:
+        return render_template('index.html')
+    # 존재하지 않으면 -> 로그인 실패
+    else:
+        # 로그인 페이지를 보여주는 주소로 이동(로그인 화면으로 다시 이동)
+        return redirect('/')
+    
+@app.route('/signup')
+def signup():
+    return render_template('id_check.html')
+
+# id의 값을 중복체크하는 주소를 생성
+@app.route('/id_check')
+def id_check():
+    # 유저가 보낸 아이디를 변수에 저장
+    user_id = request.args['input_id']
+    id_check_query = """
+        select * from `user`
+        where `id` = %s
     """
 
-    # 함수 호출
-    db_result = mydb.sql_query(login_query, _id, _pass)
-    # 로그인의 성공 여부 (조건식?? db_result가 존재하는가?)
-    if db_result:
-        return render_template('index.html')
+    result_sql = mydb.sql_queary(
+        id_check_query, user_id
+    )
+
+    # result_sql가 존재한다면 중복된 아이디 -> 회원가입 불가
+    if result_sql:
+        return redirect("/signup")
     else:
-        # 로그인이 실패하는 경우 -> 로그인화면('/')으로 되돌아간다.
-        return redirect('/')
-        # return "login fail"
+        # result_sql가 존재하지 않는다면 중복되지 않은 아이디 -> 회원가입 가능
+        # 사용 가능
+        return render_template('signup2.html')
+    
+@app.route('/user_insert', methods=['post'])
+def user_insert():
+    # 유저가 보낸 데이터는 3개 : id, password, name
+    user_id = request.form['input_id']
+    user_pass = request.form['input_pass']
+    user_name = request.form['input_name']
+    # DB server에 데이터를 insert
+    insert_query = """
+        insert into `user`
+        values (%s, %s, %s)
+    """
+    mydb.sql_query(insert_query, user_id, user_pass, user_name)
+    # DB server에 동기화
+    mydb.commit_db()
+    return render_template('signup3.html')
+
 
 @app.route('/invest')
 def invest():
