@@ -135,4 +135,4 @@ def invest():
     return res_data
 
 # 웹서버를 실행 
-# app.run(debug=True) -> 플라스크로 실행하면 run이 필요없으므로 제거
+# app.run(debug=True) 플라스크로 실행하면 run이 필요없으므로 제거
