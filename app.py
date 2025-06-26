@@ -6,7 +6,7 @@ from database import MyDB
 
 # MyDB class 생성
 mydb = MyDB(
-    _host = 'gaeun$default'
+    _host = 'gaeun$default',
     _port = 3306,
     _user = 'gaeun',
     _pw = 'rkskekfk!',
