@@ -4,7 +4,7 @@ from database import MyDB
 # MyDB class 생성
 # MyDB class 생성
 mydb = MyDB(
-    _host = 'gaeun$default',
+    _host = 'gaeun.mysql.pythonanywhere-services.com',
     _port = 3306,
     _user = 'gaeun',
     _pw = 'rkskekfk!',
