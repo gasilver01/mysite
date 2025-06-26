@@ -5,7 +5,13 @@ from invest import Quant
 from database import MyDB
 
 # MyDB class 생성
-mydb = MyDB()
+mydb = MyDB(
+    _host = 'gaeun$default'
+    _port = 3306,
+    _user = 'gaeun',
+    _pw = 'rkskekfk!',
+    db_name = 'gaeun$default'
+)
 
 # Flask class 생성 
 # 생성자 함수 필요한 인자 : 파일의 이름 
@@ -67,7 +73,7 @@ def id_check():
     else:
         # result_sql가 존재하지 않는다면 중복되지 않은 아이디 -> 회원가입 가능
         # 사용 가능
-        return render_template('signup2.html')
+        return render_template('signup2.html', id = user_id)
     
 @app.route('/user_insert', methods=['post'])
 def user_insert():
@@ -101,7 +107,10 @@ def invest():
         """
     )
     # input_code를 이용해서 csv 파일을 로드 
-    df = pd.read_csv(f"csv/{input_code}.csv")
+    # local에서는 상대 경로
+    # df = pd.read_csv(f"csv/{input_code}.csv")
+    # pythonanywhere에서는 절대 경로 사용
+    df = pd.read_csv(f"home/gaeun/mysite/csv/{input_code}.csv")
     quant = Quant(df, _start = input_start_time, _end=input_end_time, _col='Close')
     if input_kind == 'bnh':
         result, rtn = quant.buyandhold()
@@ -126,4 +135,4 @@ def invest():
     return res_data
 
 # 웹서버를 실행 
-app.run(debug=True)
+# app.run(debug=True) -> 플라스크로 실행하면 run이 필요없으므로 제거
