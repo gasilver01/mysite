@@ -8,7 +8,7 @@ mydb = MyDB(
     _port = 3306,
     _user = 'gaeun',
     _pw = 'rkskekfk!',
-    db_name = 'gaeun$default'
+    _db_name = 'gaeun$default'
 )
 
 # table 생성 쿼리문 
